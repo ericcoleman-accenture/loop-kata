@@ -16,11 +16,11 @@
                     "type": "Unsigned"
                 },
                 {
-                    "name": "Direction",
+                    "name": "Rotation",
                     "type": "Integer"
                 },
                 {
-                    "name": "Forwards/Backwards",
+                    "name": "Direction",
                     "type": "Unsigned"
                 },
                 {
@@ -54,12 +54,12 @@
                     "messageLength": 2,
                     "data": [
                         {
-                            "property": "Direction",
+                            "property": "Rotation",
                             "length": 8,
                             "bitIndex": 0
                         },
                         {
-                            "property": "Forwards/Backwards",
+                            "property": "Direction",
                             "length": 1,
                             "bitIndex": 8
                         },

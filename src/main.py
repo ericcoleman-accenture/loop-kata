@@ -26,24 +26,27 @@ class CanListener(can.Listener):
 
 
     def handle_motion_control_message(self, msg):
-        direction = msg.data[0]
-        forward = bool(msg.data[1] & 0x80)
+        rotation = msg.data[0]
+        direction = msg.data[1] & 0x80
         throttle = msg.data[1] & 0x7F
         speed = self.throttle_percentage_to_mph(throttle)
 
-        if (not self.obstruction_detected or forward > 0) and self.powered_on:
-            self.send_movement_message(direction, forward, speed)
+        if self.powered_on and self.movement_valid(direction):
+            self.send_movement_message(rotation, direction, speed)
 
-    def send_movement_message(self, direction, forward, speed):
-        byte_0 = int(direction)
+    def send_movement_message(self, rotation, direction, speed):
+        byte_0 = int(rotation)
         byte_1 = speed
 
-        if forward:
+        if direction:
             byte_1 |= 0x80
 
         msg = can.Message(arbitration_id=MOVEMENT_MSG_ID, data=[byte_0, byte_1])
 
         bus.send(msg)
+
+    def movement_valid(self, direction):
+        return (not self.obstruction_detected or direction)
 
     def throttle_percentage_to_mph(self, throttle_percentage):
         return int(throttle_percentage * .01 * 64)

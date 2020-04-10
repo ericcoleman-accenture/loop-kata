@@ -54,16 +54,16 @@ def test_when_receives_move_forward_from_radio_sends_move_forward_to_motor(loop_
     radio_device = loop_device_client.create_device('RadioTransmitter', can_bus_adapter_name)
     motor_control_device = loop_device_client.create_device('MotorControlBoard', can_bus_adapter_name)
 
-    radio_device.set_property('Direction', 0)
-    radio_device.set_property('Forwards/Backwards',  0)
+    radio_device.set_property('Rotation', 0)
+    radio_device.set_property('Direction',  0)
     radio_device.set_property('Throttle', 50)
 
     radio_device.send_message('MotionControl')
     time.sleep(1)
 
     assert motor_control_device.message_counts('Movement')['receiveCount'] == 1
+    assert motor_control_device.get_property('Rotation') == '0'
     assert motor_control_device.get_property('Direction') == '0'
-    assert motor_control_device.get_property('Forwards/Backwards') == '0'
     assert motor_control_device.get_property('Speed') == '32'
 
 
@@ -71,16 +71,16 @@ def test_when_receives_move_backward_from_radio_sends_move_backward_to_motor(loo
     radio_device = loop_device_client.create_device('RadioTransmitter', can_bus_adapter_name)
     motor_control_device = loop_device_client.create_device('MotorControlBoard', can_bus_adapter_name)
 
-    radio_device.set_property('Direction', -90)
-    radio_device.set_property('Forwards/Backwards',  1)
+    radio_device.set_property('Rotation', -90)
+    radio_device.set_property('Direction',  1)
     radio_device.set_property('Throttle', 75)
 
     radio_device.send_message('MotionControl')
     time.sleep(1)
 
     assert motor_control_device.message_counts('Movement')['receiveCount'] == 1
-    assert motor_control_device.get_property('Direction') == '-90'
-    assert motor_control_device.get_property('Forwards/Backwards') == '1'
+    assert motor_control_device.get_property('Rotation') == '-90'
+    assert motor_control_device.get_property('Direction') == '1'
     assert motor_control_device.get_property('Speed') == '48'
 
 
@@ -88,8 +88,8 @@ def test_when_sensors_detect_obstacle_motor_control_movement_is_stopped(loop_dev
     motor_control_device = loop_device_client.create_device('MotorControlBoard', can_bus_adapter_name)
     sensor_device = loop_device_client.create_device('Sensors', can_bus_adapter_name)
 
-    motor_control_device.set_property('Direction', '92')
-    motor_control_device.set_property('Forwards/Backwards', '1')
+    motor_control_device.set_property('Rotation', '92')
+    motor_control_device.set_property('Direction', '1')
     motor_control_device.set_property('Speed','48')
     sensor_device.set_property('ObstructionDetected', True)
     
@@ -98,8 +98,8 @@ def test_when_sensors_detect_obstacle_motor_control_movement_is_stopped(loop_dev
     time.sleep(1)
 
     assert motor_control_device.message_counts('Movement')['receiveCount'] == 1
+    assert motor_control_device.get_property('Rotation') == '0'
     assert motor_control_device.get_property('Direction') == '0'
-    assert motor_control_device.get_property('Forwards/Backwards') == '0'
     assert motor_control_device.get_property('Speed') == '0'
 
 def test_when_receive_sensor_state_obstruction_status_is_updated(loop_device_client, can_bus_adapter_name):
@@ -121,7 +121,7 @@ def test_when_obstacle_is_detected_movement_messages_are_not_sent(loop_device_cl
 
     main.listener.obstruction_detected = True
 
-    radio_device.set_property('Forwards/Backwards',  0)
+    radio_device.set_property('Direction',  0)
     radio_device.send_message('MotionControl')
 
     time.sleep(1)
@@ -135,7 +135,7 @@ def test_when_obstacle_is_detected_robot_can_move_backward(loop_device_client, c
 
     main.listener.obstruction_detected = True
 
-    radio_device.set_property('Forwards/Backwards',  1)
+    radio_device.set_property('Direction',  1)
     radio_device.send_message('MotionControl')
 
     time.sleep(1)
@@ -160,8 +160,8 @@ def test_when_radio_power_is_turned_off_the_motors_are_stopped(loop_device_clien
     motor_control_device = loop_device_client.create_device('MotorControlBoard', can_bus_adapter_name)
     radio_device = loop_device_client.create_device('RadioTransmitter', can_bus_adapter_name)
 
-    motor_control_device.set_property('Direction', '38')
-    motor_control_device.set_property('Forwards/Backwards', '1')
+    motor_control_device.set_property('Rotation', '38')
+    motor_control_device.set_property('Direction', '1')
     motor_control_device.set_property('Speed','48')
 
     radio_device.set_property('PowerMode',  False)
@@ -170,8 +170,8 @@ def test_when_radio_power_is_turned_off_the_motors_are_stopped(loop_device_clien
     time.sleep(1)
 
     assert motor_control_device.message_counts('Movement')['receiveCount'] == 1
+    assert motor_control_device.get_property('Rotation') == '0'
     assert motor_control_device.get_property('Direction') == '0'
-    assert motor_control_device.get_property('Forwards/Backwards') == '0'
     assert motor_control_device.get_property('Speed') == '0'
 
 
