@@ -1,0 +1,75 @@
+{
+    "version": "1.0.0",
+    "date": "2019-01-23",
+    "protocol": "CanBus",
+    "devices": [
+        {
+            "name": "MotorControlBoard",
+            "dateModified": "2019-01-23",
+            "properties": [
+                {
+                    "name": "Direction",
+                    "type": "Integer"
+                },
+                {
+                    "name": "Forwards/Backwards",
+                    "type": "Unsigned"
+                },
+                {
+                    "name": "Speed",
+                    "type": "Unsigned"
+                }
+            ],
+            "messages": [
+                {
+                    "name": "Movement",
+                    "enableDirection": "RCV",
+                    "id": "100",
+                    "messageLength": 2,
+                    "data": [
+                        {
+                            "property": "Direction",
+                            "length": 8,
+                            "bitIndex": 0
+                        },
+                        {
+                            "property": "Forwards/Backwards",
+                            "length": 1,
+                            "bitIndex": 8
+                        },
+                        {
+                            "property": "Speed",
+                            "length": 7,
+                            "bitIndex": 9
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Sensors",
+            "dateModified": "2019-01-23",
+            "properties": [
+                {
+                    "name": "ObstructionDetected",
+                    "type": "Boolean"
+                }
+            ],
+            "messages": [
+                {
+                    "name": "SensorState",
+                    "enableDirection": "XMT",
+                    "id": "110",
+                    "messageLength": 1,
+                    "data": [
+                        {
+                            "property": "ObstructionDetected",
+                            "length": 1,
+                            "bitIndex": 0
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

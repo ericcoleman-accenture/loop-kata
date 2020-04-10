@@ -1,0 +1,76 @@
+{
+    "version": "1.0.0",
+    "date": "2019-01-23",
+    "protocol": "CanBus",
+    "devices": [
+        {
+            "name": "RadioTransmitter",
+            "dateModified": "2019-01-23",
+            "properties": [
+                {
+                    "name": "PowerMode",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "BatteryLevel",
+                    "type": "Unsigned"
+                },
+                {
+                    "name": "Direction",
+                    "type": "Integer"
+                },
+                {
+                    "name": "Forwards/Backwards",
+                    "type": "Unsigned"
+                },
+                {
+                    "name": "Throttle",
+                    "type": "Unsigned"
+                }
+            ],
+            "messages": [
+                {
+                    "name": "SystemState",
+                    "enableDirection": "BOTH",
+                    "id": "500",
+                    "messageLength": 1,
+                    "data": [
+                        {
+                            "property": "PowerMode",
+                            "length": 1,
+                            "bitIndex": 0
+                        },
+                        {
+                            "property": "BatteryLevel",
+                            "length": 7,
+                            "bitIndex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "MotionControl",
+                    "enableDirection": "XMT",
+                    "id": "510",
+                    "messageLength": 2,
+                    "data": [
+                        {
+                            "property": "Direction",
+                            "length": 8,
+                            "bitIndex": 0
+                        },
+                        {
+                            "property": "Forwards/Backwards",
+                            "length": 1,
+                            "bitIndex": 8
+                        },
+                        {
+                            "property": "Throttle",
+                            "length": 7,
+                            "bitIndex": 9
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

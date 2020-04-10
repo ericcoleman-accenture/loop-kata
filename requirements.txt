@@ -1,0 +1,3 @@
+loop-python-client
+pytest
+python-can
